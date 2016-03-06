@@ -37,10 +37,22 @@
 <p>this project provides scaffold for your next RESTful API.</p>
 
 <h2>
+<a id="additional-tools" class="anchor" href="#additional-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Additional Tools</h2>
+
+<p>This scaffold mashes additional libraries to get in shape, it uses <a href="http://www.phpactiverecord.org/">PHPActiveRecord ORM</a> library for database manipulation, and uses <a href="http://jwt.io/">JWT</a> for authentication/authorization with frontend.</p>
+
+<p>Additional resources and tutorials based on the scaffold will be available here soon.</p>
+
+<h2>
 <a id="easy-to-start" class="anchor" href="#easy-to-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Easy to start</h2>
 
 <ol>
 <li>download the code or fork it to your github account.</li>
+<li>
+<p>install dependencies by running <code>./composer.phar install</code></p>
+
+<p><strong>note</strong> use your own composer install if you already have one</p>
+</li>
 <li>update config.php file to meet your system requirements.</li>
 <li>
 <p>run through your http php-enabled server, for quick starts, run <code>php -S localhost:9001</code> from your terminal inside project directory to have quick up and running development instance.</p>
@@ -48,6 +60,67 @@
 <p><strong>tip</strong> Don't use this way in production, deploy in reliable webserver</p>
 </li>
 </ol>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<h3>
+<a id="1-configure-the-database-connection" class="anchor" href="#1-configure-the-database-connection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Configure The Database Connection</h3>
+
+<p>This scaffold uses <a href="http://www.phpactiverecord.org/">PHPActiveRecord</a> to handle database connectivity and manipulation, I've PHPActiveRecord for 3 years, and it is really quick awesome solution if you still using the <code>mysqli</code> or <code>PDO</code>, give it a look.</p>
+
+<p>Configuration is straight in this scaffold, edit your <code>/config.php</code> file to add as many connections as you want,</p>
+
+<p><strong>Note</strong> that the <code>'development'</code> connection is <strong>mandatory</strong> to be there unless you set the system environment variable <code>'LIS_ENV'</code> to whatever connection name you want.</p>
+
+<p>Connection string is formatted like:</p>
+
+<p><code>&lt;DB_DRIVER&gt;://&lt;USER&gt;:&lt;PASS&gt;@&lt;DB_SERVER&gt;/&lt;DB_NAME&gt;</code></p>
+
+<p>for example <code>mysql://root:root@localhost/database</code>.</p>
+
+<p><code>models_dir</code> configuration key is critical for PHPActiveRecord to find the model classes, it is set by default to <code>app/Model</code>.</p>
+
+<p><strong>Note</strong>  if you are going to change where your models will be, point this location to where you are going to place all your models classes</p>
+
+<h3>
+<a id="2-create-your-first-route" class="anchor" href="#2-create-your-first-route" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Create Your First Route</h3>
+
+<p>This scaffold uses the term <code>Resource</code> to describe a single Entity or a Module in your system, you are free to divide your system into Resources, each Resource in your system should be included in the directory <code>Resource</code> and should extend the abstract class <code>\SlimRest\Resource</code>.</p>
+
+<p>Implement the method <code>routes</code> in your own Resource subclass by adding your routes.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">namespace</span> <span class="pl-en">SlimRest\Resource</span>;</span>
+<span class="pl-s1">    <span class="pl-k">use</span> <span class="pl-c1">\SlimRest\Resource</span> <span class="pl-k">as</span> <span class="pl-c1">Resource</span>;</span>
+<span class="pl-s1">    <span class="pl-k">class</span> <span class="pl-en">Auth</span> <span class="pl-k">extends</span> <span class="pl-e">Resource</span>{</span>
+<span class="pl-s1">     <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">routes</span>(){</span>
+<span class="pl-s1">         <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>get(<span class="pl-s"><span class="pl-pds">'</span>/login<span class="pl-pds">'</span></span>, [<span class="pl-smi">$this</span>, <span class="pl-s"><span class="pl-pds">'</span>doLogin<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">         <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>post(<span class="pl-s"><span class="pl-pds">'</span>/login<span class="pl-pds">'</span></span>, [<span class="pl-smi">$this</span>, <span class="pl-s"><span class="pl-pds">'</span>postLogin<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">         <span class="pl-k">...</span></span>
+<span class="pl-s1">     }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">     <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">doLogin</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$args</span>){</span>
+<span class="pl-s1">         <span class="pl-k">...</span></span>
+<span class="pl-s1">         <span class="pl-k">return</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>respond(<span class="pl-smi">$res</span>, <span class="pl-k">...</span> );</span>
+<span class="pl-s1">     }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">     <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">postLogin</span>(<span class="pl-smi">$req</span>, <span class="pl-smi">$res</span>, <span class="pl-smi">$args</span>){</span>
+<span class="pl-s1">         <span class="pl-k">...</span></span>
+<span class="pl-s1">     }</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span></pre></div>
+
+<h3>
+<a id="3-register-resource-in-your-index-file" class="anchor" href="#3-register-resource-in-your-index-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Register Resource in your index file</h3>
+
+<p>last thing to do is to register your created resource by creating new instance in <code>/index.php</code></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-k">new</span> <span class="pl-c1">\SlimRest\Resource\</span><span class="pl-c1">Auth</span>();</span></pre></div>
+
+<p>Try accessing your routes through web browser or Postman</p>
+
+<p>Tutorials will be available soon here.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/aigdonia">aigdonia</a></p>
