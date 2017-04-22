@@ -1,11 +1,16 @@
-# slimrest RESTful API scaffold
+# slimrest RESTful API scaffold v2.0
 ## based on slimframework3.0
-
 this project provides scaffold for your next RESTful API.
+
+> Update, Version 2.0 of this scaffold is out there, some major changes have been added there.
+
+- Added support to CORS calls.
+- Dockerized.
+- Better error handling.
 
 ## Additional Tools
 
-This scaffold mashes additional libraries to get in shape, it uses [PHPActiveRecord ORM](http://www.phpactiverecord.org/) library for database manipulation, and uses [JWT](http://jwt.io/) for authentication/authorization with frontend.
+This scaffold mashes additional libraries to Slimframeworkv3.0 to get it in shape, it uses [PHPActiveRecord ORM](http://www.phpactiverecord.org/) library for database manipulation, and uses [JWT](http://jwt.io/) for authentication/authorization with frontend.
 
 Additional resources and tutorials based on the scaffold will be available here soon.
 
@@ -16,6 +21,7 @@ Additional resources and tutorials based on the scaffold will be available here 
  **note** use your own composer install if you already have one
  3. update config.php file to meet your system requirements.
  4. run through your http php-enabled server, for quick starts, run `php -S localhost:9001` from your terminal inside project directory to have quick up and running development instance.
+ **note** you can use the docker file to deploy in docker environment, more about this down here.
 
  **tip** Don't use this way in production, deploy in reliable webserver
 
@@ -74,3 +80,17 @@ last thing to do is to register your created resource by creating new instance i
 Try accessing your routes through web browser or Postman
 
 Tutorials will be available soon here.
+
+
+## Run on docker.
+You can run your application in docker environment, this requires `docker` and `docker-compose` to be installed on your machine.
+
+to deploy on docker, run the following command from terminal in your project directory
+
+```
+docker-build up -d
+```
+
+this will create 4 docker containers `nginx`, `php`, `mysql` in addition to `phpmyadmin` to  manage your database.
+
+**note** if you are looking for postgres database, check out the `pgdb` branch for modified docker-compose file.

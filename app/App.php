@@ -8,16 +8,24 @@ class App {
 
 	function __construct($conf){
 		$this->app = new \Slim\App;
+    // $this->app->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
 		// configure error logger
 		$this->registerErrorLogger();
 		// configure the database
 		$this->registerDatabase($conf['database']);
 	}
 
+  public function attachMiddleWare($middleware){
+    $this->app->add($middleware);
+  }
 
-	public function route($verb, $route, $callback){
-		if(in_array($verb, ['get', 'put', 'post', 'delete']))
-			return $this->app->$verb($route, $callback);
+
+	public function route($verb, $route, $callback, $mw = null){
+		if(in_array($verb, ['get', 'put', 'post', 'delete', 'patch']))
+      if(is_null( $mw ))
+  			return $this->app->$verb($route, $callback);
+      else // heeey, we are going to attach some middlewares here
+        return $this->app->$verb($route, $callback)->add($mw);
 		throw new \Exception('Invalid HTTP verb');
 	}
 
@@ -46,7 +54,7 @@ class App {
 	}
 
 	public function response($response, $data = '', $status = 200, $type = 'application/json') {
-		return $response->withStatus($status)->withHeader('Content-type', 'application/json')->write($data);
+		return $response->withStatus($status)->withHeader('Content-type', 'application/json;charset=UTF-8')->write($data);
 	}
 
 	public function registerDatabase($db_conf){

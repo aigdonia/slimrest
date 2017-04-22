@@ -15,20 +15,27 @@ abstract class Resource {
 	abstract function routes();
 
     public function respond($response, $reply, $http_status=200){
-      return $this->app->response($response, json_encode($reply), $http_status);
+      return $this->app->response($response, json_encode($reply, JSON_UNESCAPED_UNICODE), $http_status);
     }
 
-	public function get($route, $callback){
-		return $this->app->route('get', $route, $callback);
+  public function group( $route, $routeGtoup ){
+    return $this->$app->group( $route , $routeGtoup );
+  }
+
+	public function get($route, $callback, $middleware = null){
+		return $this->app->route('get', $route, $callback, $middleware );
 	}
-	public function post($route, $callback){
-		return $this->app->route('post', $route, $callback);
+	public function post($route, $callback, $middleware = null){
+		return $this->app->route('post', $route, $callback, $middleware);
 	}
-	public function put($route, $callback){
-		return $this->app->route('put', $route, $callback);
+	public function put($route, $callback, $middleware = null){
+		return $this->app->route('put', $route, $callback, $middleware);
 	}
-	public function delete($route, $callback){
-		return $this->app->route('delete', $route, $callback);
+	public function delete($route, $callback, $middleware = null){
+		return $this->app->route('delete', $route, $callback, $middleware);
+	}
+	public function patch($route, $callback, $middleware = null){
+		return $this->app->route('patch', $route, $callback, $middleware);
 	}
 
     // this method validates jwt token passed in Authorization header and retrive back the token information

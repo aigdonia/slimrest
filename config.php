@@ -3,10 +3,10 @@
 	return [
 		"database" => [
 			"connections" => array(
-				"development" => "mysql://root:root@localhost/database",
-				"test" => "mysql://root:root@localhost/database",
-				"primary" => "mysql://root:root@localhost/database"
+				"development" => "mysql://playsport:playsport@mysql/playsport?charset=utf8",
+				"test" => "mysql://mazaj:mazaj@mysql/mazaj?charset=utf8",
+				"primary" => "mysql://mazaj:mazaj@mysql/mazaj?charset=utf8"
 			) ,
-			"models_dir" => "app/Model"
+			"models_dir" => "app/Models"
 		]
 	];
